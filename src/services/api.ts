@@ -4,7 +4,7 @@ import axios from 'axios';
 // but for Web-View on same machine 'localhost' works best.
 // Ensure Backend is running on port 3000.
 // NOTE: Vite proxying could also be used, but direct URL is simpler for now.
-const BASE_URL = 'http://localhost:3000/api';
+const BASE_URL = import.meta.env.VITE_API_URL;
 
 const api = axios.create({
     baseURL: BASE_URL,
