@@ -1,16 +1,10 @@
 import axios from 'axios';
 
-// Replace with your local machine's IP if testing on mobile, 
-// but for Web-View on same machine 'localhost' works best.
-// Ensure Backend is running on port 3000.
-// NOTE: Vite proxying could also be used, but direct URL is simpler for now.
 const BASE_URL = import.meta.env.VITE_API_URL;
 
 const api = axios.create({
     baseURL: BASE_URL,
-    headers: {
-        'Content-Type': 'application/json',
-    },
+    headers: { 'Content-Type': 'application/json', },
 });
 
 // Request Interceptor: Attach Token
@@ -30,7 +24,6 @@ api.interceptors.response.use(
     (response) => response,
     (error) => {
         const currentPath = window.location.pathname;
-
         if (error.response?.status === 401 || error.response?.status === 403) {
             // Only auto-redirect to login if we're NOT already on the login page
             // This allows the Login component to handle its own errors and show the modal
