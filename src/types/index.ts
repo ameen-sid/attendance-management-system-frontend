@@ -51,21 +51,21 @@ export interface Client {
     updatedAt?: string;
 }
 
-export interface ClauseCategory {
+export interface TaskCategory {
     id: number;
     name: string;
     order: number;
-    clauses?: Clause[];
+    tasks?: Task[];
     createdAt?: string;
     updatedAt?: string;
 }
 
-export interface Clause {
+export interface Task {
     id: number;
     title: string;
     order: number;
     categoryId: number;
-    category?: ClauseCategory;
+    category?: TaskCategory;
     createdAt?: string;
     updatedAt?: string;
 }
@@ -99,8 +99,8 @@ export interface Attendance {
     plannedClient?: Client | null | string; // Name string in daily response
     plannedDept?: string | null;
     plannedTasks?: string | null;
-    plannedClauseCategoryId?: number | null;
-    plannedClauseId?: number | null;
+    plannedTaskCategoryId?: number | null;
+    plannedTaskId?: number | null;
 
     // Report fields
     reportTasksDone?: string | null;
@@ -109,8 +109,8 @@ export interface Attendance {
     reportTargetDate?: string | null;
     reportResponsible?: string | null;
     reportStatus?: string | null;
-    reportClauseCategoryId?: number | null;
-    reportClauseId?: number | null;
+    reportTaskCategoryId?: number | null;
+    reportTaskId?: number | null;
 
     attendanceTasks?: {
         id: number;

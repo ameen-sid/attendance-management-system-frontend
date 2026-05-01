@@ -73,7 +73,7 @@ const DashboardLayout = () => {
 						</div>
 						{!isCollapsed && (
 							<span className="font-bold text-sm tracking-tight text-gray-900 whitespace-nowrap">
-								The Consulting Gurus
+								Sarvagya
 							</span>
 						)}
 					</div>
@@ -125,9 +125,9 @@ const DashboardLayout = () => {
 						onClick={closeMobileSidebar}
 					/>
 					<NavItem
-						to="/clauses"
+						to="/tasks"
 						icon={<LayoutList size={20} />}
-						label="Clauses"
+						label="Tasks"
 						collapsed={isCollapsed}
 						onClick={closeMobileSidebar}
 					/>
@@ -235,7 +235,7 @@ const DashboardLayout = () => {
 							className="w-8 h-8 object-contain"
 						/>
 						<span className="font-bold text-sm text-gray-900">
-							The Consulting Gurus
+							Sarvagya
 						</span>
 					</div>
 					<button

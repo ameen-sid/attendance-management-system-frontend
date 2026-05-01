@@ -7,7 +7,7 @@ import Attendance from "./pages/Attendance";
 import EmployeeAttendance from "./pages/EmployeeAttendance";
 import Clients from "./pages/Clients";
 import ClientAttendance from "./pages/ClientAttendance";
-import Clauses from "./pages/Clauses";
+import Tasks from "./pages/Tasks";
 import Settings from "./pages/Settings";
 import Schedule from "./pages/Schedule";
 import { useAuth } from "./context/AuthContext";
@@ -47,7 +47,7 @@ function App() {
 					path="clients/:clientId"
 					element={<ClientAttendance />}
 				/>
-				<Route path="clauses" element={<Clauses />} />
+				<Route path="tasks" element={<Tasks />} />
 				<Route path="settings" element={<Settings />} />
 				<Route path="schedule" element={<Schedule />} />
 			</Route>

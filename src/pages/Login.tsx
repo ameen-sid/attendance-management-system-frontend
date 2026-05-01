@@ -64,8 +64,8 @@ const Login = () => {
 					<div className="flex flex-col items-center mb-8">
 						<img
 							src="/logo.png"
-							alt="The Consulting Gurus"
-							className="h-24 object-contain mb-4"
+							alt="Sarvagya"
+							className="h-32 object-contain mb-4"
 						/>
 						<p className="text-gray-500">
 							Sign in to manage your workforce

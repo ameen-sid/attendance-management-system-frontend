@@ -9,28 +9,28 @@ import {
 	ChevronDown,
 	LayoutList,
 } from "lucide-react";
-import { clauseService } from "../services/clause.service";
-import type { Clause, ClauseCategory } from "../types";
+import { taskService } from "../services/task.service";
+import type { Task, TaskCategory } from "../types";
 import Modal from "../components/Modal";
 
-const Clauses = () => {
+const Tasks = () => {
 
 	// Data State
-	const [categories, setCategories] = useState<ClauseCategory[]>([]);
+	const [categories, setCategories] = useState<TaskCategory[]>([]);
 	const [loading, setLoading] = useState(false);
 	const [searchTerm, setSearchTerm] = useState("");
 	const [expandedCategories, setExpandedCategories] = useState<number[]>([]);
 
 	// Modal State
-	const [modalMode, setModalMode] = useState<"CATEGORY" | "CLAUSE">("CATEGORY");
+	const [modalMode, setModalMode] = useState<"CATEGORY" | "TASK">("CATEGORY");
 	const [editMode, setEditMode] = useState<"ADD" | "EDIT">("ADD");
 	const [isOpen, setIsOpen] = useState(false);
-	const [selectedCategory, setSelectedCategory] = useState<ClauseCategory | null>(null);
-	const [selectedClause, setSelectedClause] = useState<Clause | null>(null);
+	const [selectedCategory, setSelectedCategory] = useState<TaskCategory | null>(null);
+	const [selectedTask, setSelectedTask] = useState<Task | null>(null);
 
 	// Form State
 	const [categoryForm, setCategoryForm] = useState({ name: "", order: 0 });
-	const [clauseForm, setClauseForm] = useState({
+	const [taskForm, setTaskForm] = useState({
 		title: "",
 		order: 0,
 		categoryId: 0,
@@ -39,12 +39,12 @@ const Clauses = () => {
 	const fetchAll = useCallback(async () => {
 		setLoading(true);
 		try {
-			const resp = await clauseService.getCategories();
+			const resp = await taskService.getCategories();
 			if (resp.success) {
 				setCategories(resp.data);
 				// Expand all by default initially
 				if (expandedCategories.length === 0) {
-					setExpandedCategories(resp.data.map((c: ClauseCategory) => c.id));
+					setExpandedCategories(resp.data.map((c: TaskCategory) => c.id));
 				}
 			}
 		} catch (error) {
@@ -65,7 +65,7 @@ const Clauses = () => {
 		);
 	};
 
-	const handleOpenCategory = (cat: ClauseCategory | null = null) => {
+	const handleOpenCategory = (cat: TaskCategory | null = null) => {
 
 		setModalMode("CATEGORY");
 		if (cat) {
@@ -79,39 +79,39 @@ const Clauses = () => {
 		setIsOpen(true);
 	};
 
-	const handleOpenClause = (catId: number, clause: Clause | null = null) => {
+	const handleOpenTask = (catId: number, task: Task | null = null) => {
 
-		setModalMode("CLAUSE");
-		if (clause) {
+		setModalMode("TASK");
+		if (task) {
 			setEditMode("EDIT");
-			setSelectedClause(clause);
-			setClauseForm({
-				title: clause.title,
-				order: clause.order,
+			setSelectedTask(task);
+			setTaskForm({
+				title: task.title,
+				order: task.order,
 				categoryId: catId,
 			});
 		} else {
 			setEditMode("ADD");
 			// Find max order in this category
 			const cat = categories.find((c) => c.id === catId);
-			const nextOrder = (cat?.clauses?.length || 0) + 1;
-			setClauseForm({ title: "", order: nextOrder, categoryId: catId });
+			const nextOrder = (cat?.tasks?.length || 0) + 1;
+			setTaskForm({ title: "", order: nextOrder, categoryId: catId });
 		}
 		setIsOpen(true);
 	};
 
 	const handleDeleteCategory = async (id: number) => {
 
-		if (window.confirm("Delete category and all its clauses?")) {
-			await clauseService.deleteCategory(id);
+		if (window.confirm("Delete category and all its tasks?")) {
+			await taskService.deleteCategory(id);
 			fetchAll();
 		}
 	};
 
-	const handleDeleteClause = async (id: number) => {
+	const handleDeleteTask = async (id: number) => {
 
-		if (window.confirm("Delete this clause?")) {
-			await clauseService.deleteClause(id);
+		if (window.confirm("Delete this task?")) {
+			await taskService.deleteTask(id);
 			fetchAll();
 		}
 	};
@@ -122,10 +122,10 @@ const Clauses = () => {
 		try {
 			if (modalMode === "CATEGORY") {
 				if (editMode === "ADD")
-					await clauseService.createCategory(categoryForm);
+					await taskService.createCategory(categoryForm);
 				else {
 					if (selectedCategory) {
-						await clauseService.updateCategory(
+						await taskService.updateCategory(
 							selectedCategory.id,
 							categoryForm,
 						);
@@ -133,12 +133,12 @@ const Clauses = () => {
 				}
 			} else {
 				if (editMode === "ADD")
-					await clauseService.createClause(clauseForm);
+					await taskService.createTask(taskForm);
 				else {
-					if (selectedClause) {
-						await clauseService.updateClause(
-							selectedClause.id,
-							clauseForm,
+					if (selectedTask) {
+						await taskService.updateTask(
+							selectedTask.id,
+							taskForm,
 						);
 					}
 				}
@@ -154,7 +154,7 @@ const Clauses = () => {
 	const filteredCategories = categories.filter(
 		(cat) =>
 			cat.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-			cat.clauses?.some((cl: Clause) =>
+			cat.tasks?.some((cl: Task) =>
 				cl.title.toLowerCase().includes(searchTerm.toLowerCase()),
 			) || false,
 	);
@@ -165,10 +165,10 @@ const Clauses = () => {
 			<div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
 				<div>
 					<h1 className="text-2xl font-bold text-gray-900 tracking-tight">
-						Clause Management
+						Tasks Management
 					</h1>
 					<p className="text-gray-500 mt-1 text-sm font-medium">
-						Define hierarchical clauses and requirements categories.
+						Define hierarchical tasks and categories.
 					</p>
 				</div>
 				<button
@@ -188,7 +188,7 @@ const Clauses = () => {
 					/>
 					<input
 						type="text"
-						placeholder="Search categories or clauses..."
+						placeholder="Search categories or tasks..."
 						value={searchTerm}
 						onChange={(e) => setSearchTerm(e.target.value)}
 						className="w-full pl-10 pr-4 py-2.5 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 transition-all placeholder:text-gray-400 text-sm"
@@ -227,7 +227,7 @@ const Clauses = () => {
 											{cat.name}
 										</h3>
 										<p className="text-[10px] text-gray-500 uppercase font-bold tracking-widest">
-											{cat.clauses?.length || 0} Clauses
+											{cat.tasks?.length || 0} Tasks
 										</p>
 									</div>
 								</div>
@@ -236,10 +236,10 @@ const Clauses = () => {
 									<button
 										onClick={(e) => {
 											e.stopPropagation();
-											handleOpenClause(cat.id);
+											handleOpenTask(cat.id);
 										}}
 										className="p-2 text-indigo-600 hover:bg-indigo-50 rounded-lg transition-colors flex items-center gap-1.5 text-xs font-bold">
-										<Plus size={14} /> Add Clause
+										<Plus size={14} /> Add Task
 									</button>
 									<button
 										onClick={(e) => {
@@ -260,28 +260,28 @@ const Clauses = () => {
 								</div>
 							</div>
 
-							{/* Clauses List */}
+							{/* Tasks List */}
 							{expandedCategories.includes(cat.id) && (
 								<div className="border-t border-gray-100 divide-y divide-gray-50 bg-white">
-									{cat.clauses && cat.clauses.length > 0 ? (
-										cat.clauses.map((clause: Clause) => (
+									{cat.tasks && cat.tasks.length > 0 ? (
+										cat.tasks.map((task: Task) => (
 											<div
-												key={clause.id}
-												className="flex items-center justify-between p-4 pl-16 hover:bg-gray-50/50 transition-colors group/clause">
+												key={task.id}
+												className="flex items-center justify-between p-4 pl-16 hover:bg-gray-50/50 transition-colors group/task">
 												<div className="flex items-center gap-4 flex-1">
 													<span className="text-xs font-bold text-gray-400 w-8">
-														{clause.order}
+														{task.order}
 													</span>
 													<span className="text-sm font-medium text-gray-700">
-														{clause.title}
+														{task.title}
 													</span>
 												</div>
-												<div className="flex items-center gap-2 opacity-0 group-hover/clause:opacity-100 transition-opacity">
+												<div className="flex items-center gap-2 opacity-0 group-hover/task:opacity-100 transition-opacity">
 													<button
 														onClick={() =>
-															handleOpenClause(
+															handleOpenTask(
 																cat.id,
-																clause,
+																task,
 															)
 														}
 														className="p-2 text-gray-400 hover:text-indigo-600 hover:bg-indigo-50 rounded-lg transition-colors">
@@ -289,8 +289,8 @@ const Clauses = () => {
 													</button>
 													<button
 														onClick={() =>
-															handleDeleteClause(
-																clause.id,
+															handleDeleteTask(
+																task.id,
 															)
 														}
 														className="p-2 text-gray-400 hover:text-red-600 hover:bg-red-50 rounded-lg transition-colors">
@@ -301,7 +301,7 @@ const Clauses = () => {
 										))
 									) : (
 										<div className="p-8 text-center text-gray-400 text-xs italic">
-											No clauses added yet.
+											No tasks added yet.
 										</div>
 									)}
 								</div>
@@ -327,7 +327,7 @@ const Clauses = () => {
 					<div className="p-6 border-b border-gray-100 flex justify-between items-center bg-white sticky top-0 rounded-t-2xl">
 						<h2 className="text-lg font-bold text-gray-900">
 							{editMode === "ADD" ? "Add" : "Edit"}{" "}
-							{modalMode === "CATEGORY" ? "Category" : "Clause"}
+							{modalMode === "CATEGORY" ? "Category" : "Task"}
 						</h2>
 						<button
 							onClick={() => setIsOpen(false)}
@@ -382,20 +382,20 @@ const Clauses = () => {
 								<>
 									<div>
 										<label className="block text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-1.5">
-											Clause Title
+											Task Title
 										</label>
 										<input
 											type="text"
 											required
-											value={clauseForm.title}
+											value={taskForm.title}
 											onChange={(e) =>
-												setClauseForm({
-													...clauseForm,
+												setTaskForm({
+													...taskForm,
 													title: e.target.value,
 												})
 											}
 											className="w-full px-4 py-2.5 border border-gray-200 rounded-xl outline-none focus:ring-4 focus:ring-indigo-100 focus:border-indigo-500 transition-all"
-											placeholder="Enter clause description..."
+											placeholder="Enter task description..."
 										/>
 									</div>
 									<div className="grid grid-cols-2 gap-4">
@@ -406,10 +406,10 @@ const Clauses = () => {
 											<input
 												type="number"
 												required
-												value={clauseForm.order}
+												value={taskForm.order}
 												onChange={(e) =>
-													setClauseForm({
-														...clauseForm,
+													setTaskForm({
+														...taskForm,
 														order: parseInt(
 															e.target.value,
 														),
@@ -423,10 +423,10 @@ const Clauses = () => {
 												Category
 											</label>
 											<select
-												value={clauseForm.categoryId}
+												value={taskForm.categoryId}
 												onChange={(e) =>
-													setClauseForm({
-														...clauseForm,
+													setTaskForm({
+														...taskForm,
 														categoryId: parseInt(
 															e.target.value,
 														),
@@ -468,4 +468,4 @@ const Clauses = () => {
 	);
 };
 
-export default Clauses;
+export default Tasks;
