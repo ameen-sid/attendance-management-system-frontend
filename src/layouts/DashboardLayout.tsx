@@ -18,7 +18,7 @@ import { useAuth } from "../context/AuthContext";
 
 const DashboardLayout = () => {
 
-    const navigate = useNavigate();
+	const navigate = useNavigate();
 	const { user, logout } = useAuth();
 	const [isCollapsed, setIsCollapsed] = useState(false);
 	const [isMobileOpen, setIsMobileOpen] = useState(false);
@@ -32,11 +32,11 @@ const DashboardLayout = () => {
 
 	const userInitials = user?.fullname
 		? user.fullname
-				.split(" ")
-				.map((n: string) => n[0])
-				.join("")
-				.toUpperCase()
-				.substring(0, 2)
+			.split(" ")
+			.map((n: string) => n[0])
+			.join("")
+			.toUpperCase()
+			.substring(0, 2)
 		: "U";
 
 	return (
@@ -57,14 +57,13 @@ const DashboardLayout = () => {
                 `}>
 				{/* 1. BRAND LOGO & TOGGLE */}
 				<div
-					className={`h-16 flex items-center border-b border-gray-100 transition-all duration-300 ${
-						isCollapsed
-							? "justify-center px-0"
-							: "justify-between px-5"
-					}`}>
-					<div className="flex items-center gap-2.5 overflow-hidden">
+					className={`h-20 flex items-center border-b border-gray-100 transition-all duration-300 ${isCollapsed
+						? "justify-center px-0"
+						: "justify-between px-5"
+						}`}>
+					<div className="flex items-center gap-3 overflow-hidden">
 						<div
-							className={`flex items-center justify-center shrink-0 ${isCollapsed ? "w-10 h-10" : "w-8 h-8"}`}>
+							className={`flex items-center justify-center shrink-0 ${isCollapsed ? "w-12 h-12" : "w-10 h-10"}`}>
 							<img
 								src="/logo-icon.png"
 								alt="Logo Icon"
@@ -72,7 +71,7 @@ const DashboardLayout = () => {
 							/>
 						</div>
 						{!isCollapsed && (
-							<span className="font-bold text-sm tracking-tight text-gray-900 whitespace-nowrap">
+							<span className="font-extrabold text-xl tracking-tight text-gray-900 whitespace-nowrap">
 								Sarvagya
 							</span>
 						)}
@@ -269,20 +268,18 @@ const NavItem = ({ to, icon, label, collapsed, onClick }: NavItemProps) => (
 		to={to}
 		onClick={onClick}
 		className={({ isActive }) =>
-			`group flex items-center px-3 py-2.5 rounded-xl transition-all duration-200 relative ${
-				isActive
-					? "bg-indigo-50 text-indigo-700 font-semibold shadow-sm shadow-indigo-100"
-					: "text-gray-500 hover:bg-gray-50 hover:text-gray-900"
+			`group flex items-center px-3 py-2.5 rounded-xl transition-all duration-200 relative ${isActive
+				? "bg-indigo-50 text-indigo-700 font-semibold shadow-sm shadow-indigo-100"
+				: "text-gray-500 hover:bg-gray-50 hover:text-gray-900"
 			} ${collapsed ? "justify-center" : "justify-between"}`
 		}>
 		<div className="flex items-center gap-3">
 			<span className="shrink-0">{icon}</span>
 			<span
-				className={`whitespace-nowrap transition-all duration-300 ${
-					collapsed
-						? "w-0 opacity-0 hidden"
-						: "w-auto opacity-100 block text-sm"
-				}`}>
+				className={`whitespace-nowrap transition-all duration-300 ${collapsed
+					? "w-0 opacity-0 hidden"
+					: "w-auto opacity-100 block text-sm"
+					}`}>
 				{label}
 			</span>
 		</div>

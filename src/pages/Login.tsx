@@ -65,9 +65,9 @@ const Login = () => {
 						<img
 							src="/logo.png"
 							alt="Sarvagya"
-							className="h-32 object-contain mb-4"
+							className="h-[200px] object-contain"
 						/>
-						<p className="text-gray-500">
+						<p className="text-gray-500 -mt-4">
 							Sign in to manage your workforce
 						</p>
 					</div>
