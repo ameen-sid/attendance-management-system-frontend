@@ -306,7 +306,7 @@ const Dashboard = () => {
 								</h3>
 							</div>
 							<p className="text-xs text-gray-500 font-medium">
-								Manpower distribution across sites
+								Task distribution across sites
 							</p>
 						</div>
 					</div>
@@ -347,7 +347,7 @@ const Dashboard = () => {
 									/>
 									<Bar
 										dataKey="value"
-										name="Assigned Crew"
+										name="Tasks Assigned"
 										fill="#6366F1"
 										radius={[0, 4, 4, 0]}
 										barSize={20}

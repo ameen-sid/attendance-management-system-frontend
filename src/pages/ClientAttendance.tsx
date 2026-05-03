@@ -98,6 +98,7 @@ const ClientAttendance = () => {
 				"Check Out": log.clockOut,
 				"Hours Worked": log.totalHrs,
 				Status: log.status || "Present",
+				Tasks: log.taskCount || 0,
 				"Tasks Done": log.reportTasksDone || "--",
 				Location: log.location,
 			}));
@@ -114,7 +115,8 @@ const ClientAttendance = () => {
 				{ wch: 12 }, // Out
 				{ wch: 12 }, // Hours
 				{ wch: 10 }, // Status
-				{ wch: 40 }, // Tasks
+				{ wch: 10 }, // Tasks
+				{ wch: 40 }, // Tasks Done
 				{ wch: 25 }, // Location
 			];
 
@@ -262,15 +264,15 @@ const ClientAttendance = () => {
 			<div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
 				<div className="bg-white p-6 rounded-2xl border border-gray-200 shadow-sm">
 					<p className="text-xs font-bold text-gray-400 uppercase tracking-widest mb-1">
-						Total Visits
+						Total Tasks
 					</p>
 					<p className="text-3xl font-black text-gray-900">
-						{logs.length}
+						{data.totalTasks}
 					</p>
 				</div>
 				<div className="bg-white p-6 rounded-2xl border border-gray-200 shadow-sm">
 					<p className="text-xs font-bold text-gray-400 uppercase tracking-widest mb-1">
-						Unique Visitors
+						Unique Developers
 					</p>
 					<p className="text-3xl font-black text-gray-900">
 						{new Set(logs.map((l: Attendance) => l.employeeName || "Unknown")).size}
@@ -321,6 +323,7 @@ const ClientAttendance = () => {
 									<th className="p-5">Employee</th>
 									<th className="p-5">Check In/Out</th>
 									<th className="p-5">Duration</th>
+									<th className="p-5">Tasks</th>
 									<th className="p-5">Task Summary</th>
 								</tr>
 							</thead>
@@ -377,6 +380,11 @@ const ClientAttendance = () => {
 										<td className="p-5">
 											<span className="px-3 py-1 bg-gray-100 rounded-lg text-xs font-bold text-gray-700">
 												{log.totalHrs} hrs
+											</span>
+										</td>
+										<td className="p-5">
+											<span className="px-3 py-1 bg-indigo-50 text-indigo-600 rounded-lg text-xs font-bold border border-indigo-100">
+												{log.taskCount || 0} tasks
 											</span>
 										</td>
 										<td className="p-5 max-w-sm">

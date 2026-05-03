@@ -86,8 +86,7 @@ const EmployeeAttendance = () => {
 			"Total Hours": log.totalHrs || "0.00",
 			"Required Hours": log.requiredHrs || REQUIRED_HOURS,
 			"Is Late": log.isLate ? "YES" : "NO",
-			Client: log.plannedClient || "--",
-			Dept: log.plannedDept || "--",
+			Client: (log.clients && log.clients.length > 0) ? log.clients.join(", ") : (typeof log.plannedClient === 'string' ? log.plannedClient : log.plannedClient?.name || "--"),
 			Location: log.location || "--",
 		}));
 
@@ -104,8 +103,7 @@ const EmployeeAttendance = () => {
 			{ wch: 12 }, // Total Hrs
 			{ wch: 15 }, // Req Hrs
 			{ wch: 10 }, // Is Late
-			{ wch: 20 }, // Client
-			{ wch: 15 }, // Dept
+			{ wch: 40 }, // Client
 			{ wch: 25 }, // Location
 		];
 		ws["!cols"] = colWidths;
@@ -171,13 +169,13 @@ const EmployeeAttendance = () => {
 			{/* 1. HEADER & NAVIGATION */}
 			<div>
 				<button
-					onClick={() => navigate("/attendance")}
+					onClick={() => navigate("/employees")}
 					className="flex items-center gap-2 text-gray-500 hover:text-indigo-600 mb-6 transition-colors font-medium group">
 					<ArrowLeft
 						size={18}
 						className="group-hover:-translate-x-1 transition-transform"
 					/>
-					Back to Attendance Logs
+					Back to Employees
 				</button>
 
 				<div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
@@ -359,8 +357,10 @@ const EmployeeAttendance = () => {
 											)}
 										</td>
 										<td className="p-4">
-											<span className="text-xs font-bold text-gray-700">
-												{typeof log?.plannedClient === 'string' ? log.plannedClient : log?.plannedClient?.name || "--"}
+											<span className="text-xs font-bold text-gray-700 max-w-[200px] inline-block whitespace-normal leading-relaxed">
+												{(log?.clients && log.clients.length > 0) 
+													? log.clients.join(", ") 
+													: (typeof log?.plannedClient === 'string' ? log.plannedClient : log?.plannedClient?.name || "--")}
 											</span>
 										</td>
 										<td className="p-4">

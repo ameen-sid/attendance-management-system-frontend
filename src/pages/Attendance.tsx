@@ -192,13 +192,14 @@ const Attendance = () => {
 															<p className="text-xs text-gray-500">
 																{log.role}
 															</p>
-															{log.plannedClient &&
-																log.plannedClient !==
-																	"--" && (
-																	<p className="text-[10px] font-bold text-indigo-500 mt-0.5 uppercase tracking-tight">
-																		Meeting:{" "}
-																		{typeof log.plannedClient === 'string' ? log.plannedClient : log.plannedClient?.name || "--"}
-																	</p>
+															{(log.clients && log.clients.length > 0) ? (
+																<p className="text-[10px] font-bold text-indigo-500 mt-0.5 uppercase tracking-tight max-w-[180px] whitespace-normal leading-tight">
+																	Work: {log.clients.join(", ")}
+																</p>
+															) : (log.plannedClient && log.plannedClient !== "--") && (
+																<p className="text-[10px] font-bold text-indigo-500 mt-0.5 uppercase tracking-tight max-w-[180px] whitespace-normal leading-tight">
+																	Meeting: {typeof log.plannedClient === 'string' ? log.plannedClient : log.plannedClient?.name || "--"}
+																</p>
 															)}
 														</div>
 													</div>
@@ -284,11 +285,14 @@ const Attendance = () => {
 																				}
 																				className="bg-gray-50/50 p-4 rounded-xl border border-gray-100 flex flex-col gap-2">
 																				<div className="flex items-center justify-between gap-3">
-																					<p className="text-sm font-bold text-gray-800 flex-1">
-																						{
-																							task.title
-																						}
-																					</p>
+																					<div className="flex-1">
+																						<p className="text-[10px] font-bold text-indigo-500 uppercase tracking-tight mb-0.5">
+																							{task.client}
+																						</p>
+																						<p className="text-sm font-bold text-gray-800">
+																							{task.title}
+																						</p>
+																					</div>
 																					<span
 																						className={`px-2 py-0.5 rounded-full text-[9px] font-black uppercase tracking-tighter border ${
 																							task.isCompleted
@@ -329,27 +333,6 @@ const Attendance = () => {
 																)}
 															</div>
 
-															<div className="pt-4 grid grid-cols-1 sm:grid-cols-2 gap-6 border-t border-gray-100">
-																<DetailItem
-																	label="Planned Client"
-																	value={
-																		typeof log.plannedClient === 'string' ? log.plannedClient : log.plannedClient?.name || "--"
-																	}
-																	icon={
-																		<MapPin
-																			size={
-																				12
-																			}
-																		/>
-																	}
-																/>
-																<DetailItem
-																	label="Department"
-																	value={
-																		log.plannedDept
-																	}
-																/>
-															</div>
 														</div>
 													</div>
 												</div>

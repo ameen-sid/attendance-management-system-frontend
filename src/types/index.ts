@@ -89,6 +89,7 @@ export interface Attendance {
     clockOut?: string;    // Formatted time
     isLate?: boolean;
     location?: string;
+    clients?: string[];
     totalHrs?: string;
     requiredHrs?: number;
     employeeName?: string;
@@ -98,6 +99,7 @@ export interface Attendance {
     plannedClientId?: number | null;
     plannedClient?: Client | null | string; // Name string in daily response
     plannedDept?: string | null;
+    taskCount?: number;
     plannedTasks?: string | null;
     plannedTaskCategoryId?: number | null;
     plannedTaskId?: number | null;
@@ -115,6 +117,7 @@ export interface Attendance {
     attendanceTasks?: {
         id: number;
         title: string;
+        client: string;
         isCompleted: boolean;
         remarks?: string | null;
     }[];
@@ -131,6 +134,7 @@ export interface EmployeeHistoryResponse {
 export interface ClientHistoryResponse {
     client: Client;
     logs: Attendance[];
+    totalTasks: number;
 }
 
 export interface DashboardStats {
