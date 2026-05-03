@@ -106,7 +106,7 @@ const Dashboard = () => {
 					label="Late Arrivals"
 					value={stats?.lateArrivals || 0}
 					icon={<Clock />}
-					trend="After 09:35 AM"
+					trend="After 10:00 AM"
 					color="amber"
 				/>
 				<AnalyticsCard
