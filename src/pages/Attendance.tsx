@@ -390,34 +390,7 @@ const Attendance = () => {
 	);
 };
 
-interface DetailItemProps {
-	label: string;
-	value: string | null | undefined;
-	icon?: React.ReactNode;
-	isMultiline?: boolean;
-}
 
-const DetailItem = ({ label, value, icon, isMultiline }: DetailItemProps) => (
-	<div className="space-y-1.5">
-		<p className="text-[10px] font-bold text-gray-400 uppercase tracking-tighter flex items-center gap-1.5">
-			{icon}
-			{label}
-		</p>
-		{isMultiline ? (
-			<div className="bg-gray-50/50 p-3 rounded-lg border border-gray-100">
-				<p className="text-sm text-gray-700 leading-relaxed whitespace-pre-wrap">
-					{value || "--"}
-				</p>
-			</div>
-		) : (
-			<p
-				className="text-sm font-semibold text-gray-800 truncate"
-				title={value || undefined}>
-				{value || "--"}
-			</p>
-		)}
-	</div>
-);
 
 const AttendanceBadge = ({ status }: { status: string }) => {
 
