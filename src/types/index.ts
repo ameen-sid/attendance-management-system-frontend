@@ -179,6 +179,11 @@ export interface CalendarEvent {
     color?: string;
     userId: number;
     user?: User;
+    clientId?: number | null;
+    client?: Client;
+    participants?: User[];
+    participantIds?: number[];
+    managers?: string | null;
     createdAt?: string;
     updatedAt?: string;
 }

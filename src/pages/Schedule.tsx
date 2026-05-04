@@ -7,6 +7,8 @@ import type { DateSelectArg, EventClickArg, EventInput, EventDropArg } from "@fu
 import type { DateClickArg, EventResizeDoneArg } from "@fullcalendar/interaction";
 import { Plus, Loader2 } from "lucide-react";
 import { getEvents, createEvent, updateEvent, deleteEvent } from "../services/event.service";
+import { employeeService } from "../services/employee.service";
+import { clientService } from "../services/client.service";
 import { useAuth } from "../context/AuthContext";
 import type { CalendarEvent } from "../types";
 import EventModal from "../components/EventModal";
@@ -20,6 +22,8 @@ const Schedule = () => {
 	const [selectedEvent, setSelectedEvent] =
 		useState<Partial<CalendarEvent> | null>(null);
 	const calendarRef = useRef<FullCalendar>(null);
+	const [allEmployees, setAllEmployees] = useState<any[]>([]);
+	const [allClients, setAllClients] = useState<any[]>([]);
 
 	const fetchEvents = useCallback(async () => {
 
@@ -40,7 +44,30 @@ const Schedule = () => {
 	}, []);
 
 	useEffect(() => {
-		fetchEvents();
+		const loadData = async () => {
+			try {
+				await fetchEvents();
+				
+				const [empRes, clientRes] = await Promise.all([
+					employeeService.getAll(1, "", 100),
+					clientService.getAll(1, "", 100)
+				]);
+
+				console.log("Employees fetched:", empRes);
+				console.log("Clients fetched:", clientRes);
+
+				if (empRes.success) {
+					setAllEmployees(empRes.data.employees || []);
+				}
+				if (clientRes.success) {
+					setAllClients(clientRes.data.clients || []);
+				}
+			} catch (err) {
+				console.error("Failed to load schedule metadata:", err);
+			}
+		};
+
+		loadData();
 	}, [fetchEvents]);
 
 	const handleSelect = (arg: DateSelectArg) => {
@@ -75,6 +102,9 @@ const Schedule = () => {
 			allDay: arg.event.allDay,
 			type: props["type"] || "",
 			color: arg.event.backgroundColor,
+			clientId: props["clientId"],
+			participants: props["participants"],
+			managers: props["managers"],
 		});
 		setModalOpen(true);
 	};
@@ -274,6 +304,8 @@ const Schedule = () => {
 				onSave={handleSaveEvent}
 				onDelete={handleDeleteEvent}
 				initialData={selectedEvent}
+				employees={allEmployees}
+				clients={allClients}
 			/>
 		</div>
 	);

@@ -2,8 +2,8 @@ import api from './api';
 import type { User, PaginatedResponse, ApiResponse } from '../types';
 
 export const employeeService = {
-    getAll: async (page: number = 1, search: string = ''): Promise<{ success: boolean; data: PaginatedResponse<User> }> => {
-        const response = await api.get<ApiResponse<PaginatedResponse<User>>>(`/employee?page=${page}&limit=10&search=${encodeURIComponent(search)}`);
+    getAll: async (page: number = 1, search: string = '', limit: number = 10): Promise<{ success: boolean; data: PaginatedResponse<User> }> => {
+        const response = await api.get<ApiResponse<PaginatedResponse<User>>>(`/employee?page=${page}&limit=${limit}&search=${encodeURIComponent(search)}`);
         // Backend returns: { statusCode: 200, data: { employees: [], total: 0, ... }, ... }
         // We need to return structure expected by UI: { success: true, data: { employees, total, totalPages } }
         return {
