@@ -35,6 +35,7 @@ const Employees = () => {
 		fullname: "",
 		role: "",
 		username: "", // Added for backend requirement
+		email: "",
 		password: "", // Added for backend requirement
 		shift_hours: 9,
 	});
@@ -74,6 +75,7 @@ const Employees = () => {
 			fullname: "",
 			role: "",
 			username: "",
+			email: "",
 			password: "",
 			shift_hours: 9,
 		});
@@ -87,6 +89,7 @@ const Employees = () => {
 			fullname: user.fullname,
 			role: user.role,
 			username: user.username,
+			email: user.email || "",
 			password: "", // Keep blank unless changing
 			shift_hours: user.shift_hours || 9,
 		});
@@ -203,7 +206,7 @@ const Employees = () => {
 														{user.fullname}
 													</p>
 													<p className="text-xs text-gray-500">
-														@{user.username}
+														@{user.username} {user.email && `• ${user.email}`}
 													</p>
 												</div>
 											</div>
@@ -384,6 +387,23 @@ const Employees = () => {
 										className="w-full px-4 py-2 border border-gray-200 rounded-xl outline-none focus:border-indigo-500 text-sm"
 									/>
 								</div>
+							</div>
+							<div>
+								<label className="block text-xs font-bold text-gray-400 uppercase mb-1">
+									Email Address
+								</label>
+								<input
+									type="email"
+									value={formData.email}
+									onChange={(e) =>
+										setFormData({
+											...formData,
+											email: e.target.value,
+										})
+									}
+									className="w-full px-4 py-2 border border-gray-200 rounded-xl outline-none focus:border-indigo-500 transition-all text-sm"
+									placeholder="employee@example.com"
+								/>
 							</div>
 							{modalMode === "ADD" && (
 								<div>
